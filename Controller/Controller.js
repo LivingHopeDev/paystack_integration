@@ -2,7 +2,8 @@ const https = require("https");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const { createToken, verifyToken } = require("../Middleware/auth");
-const User = require("../Models/Users");
+const { handleErrors } = require("../Middleware/errorHandler/function");
+const User = require("../models/Users");
 const paymentVerification = require("../Models/paymentVerification");
 dotenv.config();
 const paystackKey = process.env.PAYSTACK_SECRET_KEY;
@@ -39,7 +40,7 @@ const register = async (req, res) => {
 
   try {
     savedUser = await newUser.save();
-    res.status(201).json({ savedUser });
+    res.status(201).json({ message: "Registration successful" });
   } catch (err) {
     const error = handleErrors(err);
     res.status(500).json({ message: error });
@@ -50,13 +51,10 @@ const login = async (req, res) => {
   const { password, email } = req.body;
   try {
     const user = await User.login(email, password);
-    if (user.verified) {
+    if (user) {
       const token = createToken(user._id);
-
       const { password, ...others } = user._doc;
       res.status(200).json({ ...others, token });
-    } else {
-      res.status(401).json({ message: "Verify email to login" });
     }
   } catch (err) {
     const error = handleErrors(err);
@@ -97,7 +95,7 @@ const payment = async (req, res) => {
         phone: phone,
       },
 
-      callback_url: "https://webuy-opal.vercel.app/verify",
+      callback_url: "https://webuy-opal.vercel.app/verify", // use a live url as callback
     });
 
     const options = {

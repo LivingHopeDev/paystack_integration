@@ -22,18 +22,6 @@ const userSchema = new Schema(
       required: [true, "Please enter password"],
       minlength: [6, "Password must be at least 6 characters"],
     },
-    verified: {
-      type: Boolean,
-      default: false,
-    },
-    isUserAdmin: {
-      type: Boolean,
-      default: false,
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false,
-    },
   },
   { timestamps: true }
 );

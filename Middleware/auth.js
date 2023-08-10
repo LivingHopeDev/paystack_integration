@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../Models/Users");
+const User = require("../models/Users");
 // create token for password hashing
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {});

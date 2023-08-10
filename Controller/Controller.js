@@ -95,7 +95,7 @@ const payment = async (req, res) => {
         phone: phone,
       },
 
-      callback_url: "https://webuy-opal.vercel.app/verify", // use a live url as callback
+      callback_url: "https://example.vercel.app/verify", // use a live url as callback
     });
 
     const options = {
